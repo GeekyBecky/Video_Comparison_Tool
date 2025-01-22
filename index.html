@@ -41,6 +41,24 @@
             margin-top: 10px;
             font-size: 18px;
         }
+        #score-info {
+            position: absolute;
+            top: 10%;
+            right: 75%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+
     </style>
     <!-- Include xlsx library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
@@ -51,8 +69,10 @@
         Video 1 of 9 - 0.mp4
     </div>
     <div class="score" id="score-info">
-        TikTok Video: 0 VS Own-Music Video: 0
+        <div>TikTok Video: <span id="tiktok-score">0</span></div>
+        <div>Our Music Video: <span id="own-music-score">0</span></div>
     </div>
+    
     
     <div class="video-container" id="video-container">
         <!-- Videos will be loaded here -->
@@ -141,10 +161,9 @@
                 selectedFolder: currentPair[vote],
                 videoName: videoFiles[currentIndex]
             });
-
-            // Update score display
-            document.getElementById("score-info").textContent = 
-                `TikTok Video: ${results["tiktok video"]}, Own-Music Video: ${results["own-music video"]}`;
+            
+            document.getElementById("tiktok-score").textContent = results["tiktok video"];
+            document.getElementById("own-music-score").textContent = results["own-music video"];
 
             currentIndex++;
             loadVideos(currentIndex);
