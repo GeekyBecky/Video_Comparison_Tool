@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .video-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        video {
+            width: 100%;
+            max-height: 550px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .feedback-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        #submit-feedback {
+            display: none;
+        }
+        .progress {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+    <!-- Include xlsx library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Video Comparison Tool</h1>
+    <div class="progress" id="progress-info">
+        Video 1 of 9 - 0.mp4
+    </div>
+    
+    <div class="video-container" id="video-container">
+        <!-- Videos will be loaded here -->
+    </div>
+    <div class="feedback-container">
+        <div>
+            <input type="radio" name="feedback" id="voteLeft" value="left">
+            <label for="voteLeft">Left is better</label>
+        </div>
+        <div>
+            <input type="radio" name="feedback" id="voteRight" value="right">
+            <label for="voteRight">Right is better</label>
+        </div>
+    </div>
+    <button id="next-video" onclick="loadNextVideos()">Next Videos</button>
+    <button id="submit-feedback" onclick="submitFeedback()">Submit Feedback</button>
+
+    <script>
+        const videoFiles = ["0.mp4", "1.mp4", "2.mp4", "3.mp4", "4.mp4", "5.mp4", "6.mp4", 
+        "7.mp4", "8.mp4", "9.mp4", "10.mp4", "11.mp4", "12.mp4", "13.mp4", "14.mp4", 
+        "15.mp4", "16.mp4", "17.mp4", "18.mp4", "19.mp4", "20.mp4", "21.mp4", "22.mp4", 
+        "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4", "30.mp4", 
+        "31.mp4", "32.mp4", "33.mp4", "34.mp4", "35.mp4", "36.mp4", "37.mp4", "38.mp4", 
+        "39.mp4", "40.mp4", "41.mp4", "42.mp4", "43.mp4", "44.mp4", "45.mp4", "46.mp4", 
+        "47.mp4", "48.mp4", "49.mp4", "50.mp4", "51.mp4", "52.mp4", "53.mp4", "54.mp4", 
+        "55.mp4", "56.mp4", "57.mp4", "58.mp4", "59.mp4", "60.mp4", "61.mp4", "62.mp4", 
+        "63.mp4", "64.mp4", "65.mp4", "66.mp4", "67.mp4", "68.mp4", "69.mp4", "70.mp4", 
+        "71.mp4", "72.mp4", "73.mp4", "74.mp4", "75.mp4", "76.mp4", "77.mp4", "78.mp4", 
+        "79.mp4", "80.mp4", "81.mp4", "82.mp4", "83.mp4", "84.mp4", "85.mp4", "86.mp4", 
+        "87.mp4", "88.mp4", "89.mp4", "90.mp4", "91.mp4", "92.mp4", "93.mp4", "94.mp4", 
+        "95.mp4", "96.mp4", "97.mp4", "98.mp4", "99.mp4", "100.mp4", "fitness.mp4", "ootd.mp4",
+        "food.mp4"];
+        let currentIndex = 0;
+        const results = { "tiktok video": 0, "own-music video": 0 };
+        let currentPair = {};
+        let feedbacks = [];
+
+        function loadVideos(index) {
+            if (index >= videoFiles.length) {
+                document.getElementById("next-video").style.display = "none";
+                document.getElementById("submit-feedback").style.display = "block";
+                return;
+            }
+
+            const videoName = videoFiles[index];
+            const videoPath = `videos/${videoName}`;
+            const outputPath = `output/${videoName}`;
+
+            const isLeftVideoFromVideos = Math.random() < 0.5;
+            currentPair = {
+                left: isLeftVideoFromVideos ? "tiktok video" : "own-music video",
+                right: isLeftVideoFromVideos ? "own-music video" : "tiktok video"
+            };
+
+            const videoContainer = document.getElementById("video-container");
+            videoContainer.innerHTML = `
+                <div>
+                    <video controls>
+                        <source src="${isLeftVideoFromVideos ? videoPath : outputPath}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div>
+                    <video controls>
+                        <source src="${isLeftVideoFromVideos ? outputPath : videoPath}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            `;
+
+            document.getElementsByName("feedback").forEach(input => input.checked = false); // Clear previous selection
+            document.getElementById("progress-info").textContent = `Video ${index + 1} of ${videoFiles.length} - ${videoFiles[index]}`;
+        }
+
+        function loadNextVideos() {
+            const selected = document.querySelector('input[name="feedback"]:checked');
+            if (!selected) {
+                alert("Please select an option before proceeding to the next video.");
+                return;
+            }
+
+            const vote = selected.value;
+            results[currentPair[vote]]++;
+
+            feedbacks.push({
+                selectedFolder: currentPair[vote],
+                videoName: videoFiles[currentIndex]
+            });
+
+            currentIndex++;
+            loadVideos(currentIndex);
+        }
+
+        function submitFeedback() {
+            alert(`Final Results:\nTikTok Video: ${results["tiktok video"]}\nOwn-Music Video: ${results["own-music video"]}`);
+
+            const ws = XLSX.utils.json_to_sheet(feedbacks);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Feedback");
+
+            XLSX.writeFile(wb, "feedbacks.xlsx");
+        }
+
+        window.onload = () => loadVideos(currentIndex);
+    </script>
+</body>
+</html>
