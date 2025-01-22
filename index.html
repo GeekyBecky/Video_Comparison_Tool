@@ -50,6 +50,9 @@
     <div class="progress" id="progress-info">
         Video 1 of 9 - 0.mp4
     </div>
+    <div class="score" id="score-info">
+        TikTok Video: 0 VS Own-Music Video: 0
+    </div>
     
     <div class="video-container" id="video-container">
         <!-- Videos will be loaded here -->
@@ -138,6 +141,10 @@
                 selectedFolder: currentPair[vote],
                 videoName: videoFiles[currentIndex]
             });
+
+            // Update score display
+            document.getElementById("score-info").textContent = 
+                `TikTok Video: ${results["tiktok video"]}, Own-Music Video: ${results["own-music video"]}`;
 
             currentIndex++;
             loadVideos(currentIndex);
