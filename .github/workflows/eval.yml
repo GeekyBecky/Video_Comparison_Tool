@@ -18,23 +18,17 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
-      - name: Debug File Paths
-        run: |
-          echo "Checking current workspace directory:"
-          pwd
-          echo "Listing all files in workspace:"
-          ls -R
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
           name: video-comparison-page
-          path: base-branch/index.html
+          path: base-branch/
       - name: Deploy to GitHub Pages
         if: github.event_name == 'pull_request'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+          publish_dir: base-branch/
           destination_dir: pr-diffs/${{ github.event.pull_request.number }}
 
       - name: Comment PR with Link to Diff Report
