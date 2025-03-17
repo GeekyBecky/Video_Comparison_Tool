@@ -22,13 +22,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: video-comparison-page
-          path: ./compare_page/
+          path: ./index.html
       - name: Deploy to GitHub Pages
         if: github.event_name == 'pull_request'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./compare_page/
+          publish_dir: ./index.html
           destination_dir: pr-diffs/${{ github.event.pull_request.number }}
 
       - name: Comment PR with Link to Diff Report
