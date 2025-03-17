@@ -34,4 +34,4 @@ jobs:
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
         with:
-          message: "📊 [View the Evaluation Diff Report](https://yourusername.github.io/your-repo/pr-diffs/${{ github.event.pull_request.number }}/diff_report.html)"
+          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ github.event.pull_request.number }}/index.html)"
