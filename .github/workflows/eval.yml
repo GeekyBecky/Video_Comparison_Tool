@@ -18,6 +18,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
+      - name: Debug File Paths
+        run: |
+          echo "Checking current workspace directory:"
+          pwd
+          echo "Listing all files in workspace:"
+          ls -R
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
