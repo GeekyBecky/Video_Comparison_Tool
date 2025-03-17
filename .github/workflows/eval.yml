@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
       - name: Upload HTML Comparison Page
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: video-comparison-page
           path: base-branch/
