@@ -1,7 +1,6 @@
 name: Video Quality Tests
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 jobs:
   run-video-quality-tests:
     name: Run Video Quality Tests
@@ -23,33 +22,21 @@ jobs:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
       - name: Move pr-branch Files to pr-diffs
+        with:
+          script:|
+            const runId = context.run_id
         run: |
-          mkdir -p pr-diffs/${{ github.event.pull_request.number }}
-          rsync -av --exclude=".git" pr-branch/ pr-diffs/${{ github.event.pull_request.number }}/
-          find pr-diffs/${{ github.event.pull_request.number }}/
-      - name: Debug PR Number & Files
-        run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-          ls -la pr-diffs/${{ github.event.pull_request.number }}
-          find pr-diffs/${{ github.event.pull_request.number }}/
-      # - name: Upload HTML Comparison Page
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: video-comparison-page
-      #     path: .
-      - name: Debug PR Number & Files
-        run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-          ls -la pr-diffs/
-          find pr-diffs/
+          mkdir -p pr-diffs/${{ runId }}
+          rsync -av --exclude=".git" pr-branch/ pr-diffs/${{ runId }}/
+          find pr-diffs/${{ runId }}/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./pr-diffs/${{ github.event.pull_request.number }}
-          destination_dir: ./pr-diffs/${{ github.event.pull_request.number }}
+          publish_dir: ./pr-diffs/${{ runId }}
+          destination_dir: ./pr-diffs/${{ runId }}
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
         with:
-          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ github.event.pull_request.number }}/index.html)"
+          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ runId }}/index.html)"
