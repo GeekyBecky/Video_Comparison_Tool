@@ -22,14 +22,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
-      - name: Debug PR Number & Files
-        run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-          ls -la pr-diffs/${{ github.event.pull_request.number }}
       - name: Move base-branch Files to pr-diffs
         run: |
           mkdir -p pr-diffs/${{ github.event.inputs.pr_number }}
           cp -r base-branch/* pr-diffs/${{ github.event.inputs.pr_number }}/
+      - name: Debug PR Number & Files
+        run: |
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          ls -la pr-diffs/${{ github.event.pull_request.number }}
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
