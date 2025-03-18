@@ -31,10 +31,10 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./pr-diffs/${runId}
-          destination_dir: ./pr-diffs/${runId}
+          publish_dir: ./pr-diffs/${{ github.run_id }}
+          destination_dir: ./pr-diffs/${{ github.run_id }}
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
         with:
-          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${runId}/index.html)"
+          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ github.run_id }}/index.html)"
