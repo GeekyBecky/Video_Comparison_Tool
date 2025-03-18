@@ -25,7 +25,8 @@ jobs:
       - name: Move base-branch Files to pr-diffs
         run: |
           mkdir -p pr-diffs/${{ github.event.pull_request.number }}
-          cp -r base-branch/* pr-diffs/${{ github.event.pull_request.number }}
+          cp -a base-branch/. pr-diffs/${{ github.event.pull_request.number }}/
+          find pr-diffs/${{ github.event.pull_request.number }}/
       - name: Debug PR Number & Files
         run: |
           echo "PR Number: ${{ github.event.pull_request.number }}"
