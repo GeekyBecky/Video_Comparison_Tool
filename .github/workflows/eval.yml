@@ -11,21 +11,11 @@ jobs:
       id-token: write
       pull-requests: write
     steps:
-      - name: Checkout PR Branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          path: pr-branch
-      - name: Checkout Base Branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-          path: base-branch
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
           name: video-comparison-page
-          path: base-branch/
+          path: index.html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
