@@ -41,7 +41,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./pr-diffs/${{ github.event.pull_request.number }}
+          publish_dir: ./pr-diffs
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
