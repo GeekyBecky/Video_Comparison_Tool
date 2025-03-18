@@ -22,7 +22,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
-      - name: Move PR branch Files to pr-diffs
+      - name: Move pr-branch Files to pr-diffs
         run: |
           mkdir -p pr-diffs/${{ github.event.pull_request.number }}
           rsync -av --exclude=".git" pr-branch/ pr-diffs/${{ github.event.pull_request.number }}/
@@ -32,11 +32,11 @@ jobs:
           echo "PR Number: ${{ github.event.pull_request.number }}"
           ls -la pr-diffs/${{ github.event.pull_request.number }}
           find pr-diffs/${{ github.event.pull_request.number }}/
-      - name: Upload HTML Comparison Page
-        uses: actions/upload-artifact@v4
-        with:
-          name: video-comparison-page
-          path: .
+      # - name: Upload HTML Comparison Page
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: video-comparison-page
+      #     path: .
       - name: Debug PR Number & Files
         run: |
           echo "PR Number: ${{ github.event.pull_request.number }}"
@@ -46,6 +46,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pr-diffs/${{ github.event.pull_request.number }}
           destination_dir: ./pr-diffs/${{ github.event.pull_request.number }}
 
       - name: Comment PR with Link to Diff Report
