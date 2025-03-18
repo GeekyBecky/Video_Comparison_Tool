@@ -24,7 +24,7 @@ jobs:
       - name: Move index.html to Workspace
         run: |
           mkdir -p pr-diffs/
-          cp base-branch/* pr-diffs/
+          cp base-branch/ pr-diffs/
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
