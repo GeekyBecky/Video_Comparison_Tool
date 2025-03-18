@@ -22,21 +22,18 @@ jobs:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
       - name: Move pr-branch Files to pr-diffs
-        with:
-          script:|
-            const runId = context.run_id
         run: |
-          mkdir -p pr-diffs/${{ runId }}
-          rsync -av --exclude=".git" pr-branch/ pr-diffs/${{ runId }}/
-          find pr-diffs/${{ runId }}/
+          mkdir -p pr-diffs/${{ context.run_id }}
+          rsync -av --exclude=".git" pr-branch/ pr-diffs/${{ context.run_id }}/
+          find pr-diffs/${{ context.run_id }}/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./pr-diffs/${{ runId }}
-          destination_dir: ./pr-diffs/${{ runId }}
+          publish_dir: ./pr-diffs/${{ context.run_id }}
+          destination_dir: ./pr-diffs/${{ context.run_id }}
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
         with:
-          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ runId }}/index.html)"
+          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ context.run_id }}/index.html)"
