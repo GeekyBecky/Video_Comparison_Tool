@@ -1,7 +1,6 @@
 name: Video Quality Tests
 on:
-  pull_request:
-      types: [opened, synchronize, reopened]
+  workflow_dispatch:
 jobs:
   run-video-quality-tests:
     name: Run Video Quality Tests
@@ -36,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: video-comparison-page
-          path: pr-diffs/
+          path: .
       - name: Debug PR Number & Files
         run: |
           echo "PR Number: ${{ github.event.pull_request.number }}"
@@ -46,7 +45,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./pr-diffs/${{ github.event.pull_request.number }}
+          destination_dir: ./pr-diffs/${{ github.event.pull_request.number }}
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
