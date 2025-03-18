@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        video {
+            width: 100%;
+            max-height: 550px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .progress {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Video Comparison Tool</h1>
+    <div class="progress" id="progress-info">
+        Video 1 of 9 - 0.mp4
+    </div>
+
+    <div class="video-container" id="video-container"></div>
+
+    <button id="next-video" onclick="loadNextVideos()">Next Videos</button>
+
+    <script>
+        const videoFiles = ["1.mp4", "2.mp4", "3.mp4", "4.mp4", "5.mp4", "6.mp4",
+            "7.mp4", "8.mp4", "9.mp4", "10.mp4"];
+        let currentIndex = 0;
+
+        function loadVideos(index) {
+            if (index >= videoFiles.length) {
+                document.getElementById("progress-info").textContent = "No more videos.";
+                return;
+            }
+
+            const videoName = videoFiles[index];
+            const videoContainer = document.getElementById("video-container");
+            videoContainer.innerHTML = `
+                <div class="video-wrapper">
+                    <h3>Previous</h3>
+                    <video controls>
+                        <source src="prev/${videoName}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-wrapper">
+                    <h3>After</h3>
+                    <video controls>
+                        <source src="after/${videoName}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            `;
+
+            document.getElementById("progress-info").textContent = `Video ${index + 1} of ${videoFiles.length} - ${videoFiles[index]}`;
+        }
+
+        function loadNextVideos() {
+            currentIndex++;
+            loadVideos(currentIndex);
+        }
+
+        window.onload = () => loadVideos(currentIndex);
+    </script>
+</body>
+
+</html>
