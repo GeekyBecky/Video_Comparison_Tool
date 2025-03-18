@@ -9,6 +9,7 @@ jobs:
       contents: write
       pages: write
       id-token: write
+      pull-requests: write
     steps:
       - name: Checkout PR Branch
         uses: actions/checkout@v3
