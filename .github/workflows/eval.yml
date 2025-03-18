@@ -1,6 +1,7 @@
 name: Video Quality Tests
 on:
-  workflow_dispatch:
+  pull_request:
+      types: [opened, synchronize, reopened]
 jobs:
   run-video-quality-tests:
     name: Run Video Quality Tests
