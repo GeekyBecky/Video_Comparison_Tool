@@ -25,7 +25,7 @@ jobs:
       - name: Move base-branch Files to pr-diffs
         run: |
           mkdir -p pr-diffs/${{ github.event.pull_request.number }}
-          cp -a base-branch/. pr-diffs/${{ github.event.pull_request.number }}/
+          rsync -av --exclude=".git" base-branch/ pr-diffs/${{ github.event.pull_request.number }}/
           find pr-diffs/${{ github.event.pull_request.number }}/
       - name: Debug PR Number & Files
         run: |
@@ -42,7 +42,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: pr-diffs/
+          publish_dir: ./pr-diffs
 
       - name: Comment PR with Link to Diff Report
         uses: mshick/add-pr-comment@v2
