@@ -24,12 +24,12 @@ jobs:
       - name: Move index.html to Workspace
         run: |
           mkdir -p pr-diffs/
-          cp base-branch/index.html pr-diffs/index.html
+          cp base-branch/* pr-diffs/
       - name: Upload HTML Comparison Page
         uses: actions/upload-artifact@v4
         with:
           name: video-comparison-page
-          path: pr-diffs/index.html
+          path: pr-diffs/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
