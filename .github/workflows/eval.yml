@@ -27,8 +27,6 @@ jobs:
           mkdir -p pr-diffs/${runId}
           rsync -av --exclude=".git" pr-branch/ pr-diffs/${runId}/
           find pr-diffs/${runId}/
-      - name: Set GCS Credentials
-        run: echo "${{ secrets.GCS_SIGNEDURL_KEY }}" | base64 --decode > gcs_key.json
       - name: Run Python Script to Generate HTML
         env:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
@@ -42,7 +40,7 @@ jobs:
           publish_dir: ./pr-diffs/${{ github.run_id }}
           destination_dir: ./pr-diffs/${{ github.run_id }}
 
-      - name: Comment PR with Link to Diff Report
-        uses: mshick/add-pr-comment@v2
-        with:
-          message: "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${{ github.run_id }}/index.html)"
+      - name: Print Report Link
+        run: |
+          runId=${{ github.run_id }}
+          echo "📊 [View the Evaluation Diff Report](https://GeekyBecky.github.io/Video_Comparison_Tool/pr-diffs/${runId}/index.html)"
