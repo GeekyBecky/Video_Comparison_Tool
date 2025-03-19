@@ -1,4 +1,3 @@
-import base64
 import datetime
 import json
 import os
@@ -14,7 +13,7 @@ def get_gcs_credentials():
     if not gcs_key_json:
         raise ValueError("GCS_SIGNEDURL_KEY environment variable is missing.")
 
-    credentials_info = json.loads(base64.b64decode(gcs_key_json).decode("utf-8"))
+    credentials_info = json.loads(gcs_key_json)
     return service_account.Credentials.from_service_account_info(credentials_info)
 
 
