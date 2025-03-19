@@ -71,9 +71,6 @@ def generate_download_signed_url_v4(bucket_name):
     return video_data
 
 
-generate_download_signed_url_v4("evaluation_set")
-
-
 def generate_html(video_data):
     html_template = f"""
     <!DOCTYPE html>
