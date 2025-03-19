@@ -27,6 +27,14 @@ jobs:
           mkdir -p pr-diffs/${runId}
           rsync -av --exclude=".git" pr-branch/ pr-diffs/${runId}/
           find pr-diffs/${runId}/
+      - name: Set GCS Credentials
+        run: echo "${{ secrets.GCS_SIGNEDURL_KEY }}" | base64 --decode > gcs_key.json
+      - name: Run Python Script to Generate HTML
+        env:
+          GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
+        run: |
+          runId=${{ github.run_id }}
+          python generate_html.py "$runId"
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
