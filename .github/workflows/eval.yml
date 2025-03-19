@@ -27,6 +27,10 @@ jobs:
           mkdir -p pr-diffs/${runId}
           rsync -av --exclude=".git" pr-branch/ pr-diffs/${runId}/
           find pr-diffs/${runId}/
+      - name: Install Dependencies
+        run: |
+          pip install google-cloud-storage
+
       - name: Run Python Script to Generate HTML
         env:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
