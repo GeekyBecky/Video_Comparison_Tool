@@ -37,8 +37,9 @@ jobs:
         env:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
         run: |
+          cp -r base-branch/generate_html.py pr-diffs/${{ github.run_id }}/
           runId=${{ github.run_id }}
-          python base-branch/generate_html.py "$runId"
+          python pr-diffs/${runId}/generate_html.py "$runId"
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
