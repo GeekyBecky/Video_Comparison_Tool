@@ -192,7 +192,7 @@ def generate_html(video_data):
     </html>
     """
 
-    with open("index.html", "w", encoding="utf-8") as f:
+    with open("pr-branch/index.html", "w", encoding="utf-8") as f:
         f.write(html_template)
 
     print("HTML file generated: index.html")
