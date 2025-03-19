@@ -30,10 +30,6 @@ jobs:
         run: |
           runId=${{ github.run_id }}
           python pr-branch/generate_html.py
-      - name: List Generated Files
-        run: |
-          find . -name "index.html"
-          ls -R pr-branch
       - name: Move pr-branch Files to pr-diffs
         run: |
           runId=${{ github.run_id }}
