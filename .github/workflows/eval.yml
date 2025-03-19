@@ -30,7 +30,7 @@ jobs:
         run: |
           runId=${{ github.run_id }}
           python pr-branch/generate_html.py
-      - name: Debug: List Generated Files
+      - name: List Generated Files
         run: |
           find . -name "index.html"
           ls -R pr-branch
