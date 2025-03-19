@@ -75,9 +75,7 @@ def generate_download_signed_url_v4(bucket_name):
 generate_download_signed_url_v4("evaluation_set")
 
 
-def generate_html(video_data, run_id):
-    output_dir = f"pr-diffs/{run_id}"
-    os.makedirs(output_dir, exist_ok=True)
+def generate_html(video_data):
     html_template = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -201,9 +199,6 @@ def generate_html(video_data, run_id):
 
 
 if __name__ == "__main__":
-    import sys
-
     bucket_name = "evaluation_set"
     video_data = generate_download_signed_url_v4(bucket_name)
-    run_id = sys.argv[1] if len(sys.argv) > 1 else "latest"
-    generate_html(video_data, run_id)
+    generate_html(video_data)

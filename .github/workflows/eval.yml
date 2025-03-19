@@ -29,7 +29,7 @@ jobs:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
         run: |
           runId=${{ github.run_id }}
-          python pr-branch/generate_html.py "$runId"
+          python pr-branch/generate_html.py
       - name: Move pr-branch Files to pr-diffs
         run: |
           runId=${{ github.run_id }}
