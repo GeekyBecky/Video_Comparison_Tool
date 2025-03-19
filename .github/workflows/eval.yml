@@ -30,9 +30,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install google-cloud-storage
-      - name: Check GCS Credentials
-        run: |
-          echo "GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}"
       - name: Run Python Script to Generate HTML
         env:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
