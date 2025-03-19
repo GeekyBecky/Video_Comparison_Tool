@@ -7,16 +7,6 @@ from google.cloud import storage
 from google.oauth2 import service_account
 
 
-def get_gcs_credentials():
-    """Retrieve Google Cloud credentials from an environment variable."""
-    gcs_key_json = os.getenv("GCS_SIGNEDURL_KEY")
-    if not gcs_key_json:
-        raise ValueError("GCS_SIGNEDURL_KEY environment variable is missing.")
-
-    credentials_info = json.loads(gcs_key_json)
-    return service_account.Credentials.from_service_account_info(credentials_info)
-
-
 def pair_after_and_previous(bucket_name):
     storage_client = storage.Client()
     blobs = storage_client.list_blobs(bucket_name)
@@ -51,7 +41,15 @@ def generate_download_signed_url_v4(bucket_name):
     this if you are using Application Default Credentials from Google Compute
     Engine or from the Google Cloud SDK.
     """
-    storage_client = storage.Client(credentials=get_gcs_credentials())
+    gcs_key_json = os.environ.get("GCS_SIGNEDURL_KEY")
+    if not gcs_key_json:
+        raise ValueError("GCS_SIGNEDURL_KEY is not set in environment variables.")
+
+    credentials_dict = json.loads(gcs_key_json)
+    credentials = service_account.Credentials.from_service_account_info(credentials_dict)
+
+    storage_client = storage.Client(credentials=credentials, project=credentials_dict["project_id"])
+
     video_data = []
     for prev_blob_name, after_blob_name in pair_after_and_previous("evaluation_set"):
         bucket = storage_client.bucket(bucket_name)
