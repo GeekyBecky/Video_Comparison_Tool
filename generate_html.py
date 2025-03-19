@@ -42,7 +42,6 @@ def generate_download_signed_url_v4(bucket_name):
     Engine or from the Google Cloud SDK.
     """
     gcs_key_json = os.environ.get("GCS_SIGNEDURL_KEY")
-    print(gcs_key_json)
     if not gcs_key_json:
         raise ValueError("GCS_SIGNEDURL_KEY is not set in environment variables.")
 

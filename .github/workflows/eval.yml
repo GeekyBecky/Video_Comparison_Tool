@@ -21,12 +21,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base-branch
-      - name: Move pr-branch Files to pr-diffs
-        run: |
-          runId=${{ github.run_id }}
-          mkdir -p pr-diffs/${runId}
-          rsync -av --exclude=".git" pr-branch/ pr-diffs/${runId}/
-          find pr-diffs/${runId}/
       - name: Install Dependencies
         run: |
           pip install google-cloud-storage
@@ -34,9 +28,14 @@ jobs:
         env:
           GCS_SIGNEDURL_KEY: ${{ secrets.GCS_SIGNEDURL_KEY }}
         run: |
-          cp -r base-branch/generate_html.py pr-diffs/${{ github.run_id }}/
           runId=${{ github.run_id }}
-          python pr-diffs/${runId}/generate_html.py "$runId"
+          python pr-branch/generate_html.py "$runId"
+      - name: Move pr-branch Files to pr-diffs
+        run: |
+          runId=${{ github.run_id }}
+          mkdir -p pr-diffs/${runId}
+          rsync -av --exclude=".git" pr-branch/ pr-diffs/${runId}/
+          find pr-diffs/${runId}/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
