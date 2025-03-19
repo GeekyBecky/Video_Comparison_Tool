@@ -7,8 +7,7 @@ from google.cloud import storage
 from google.oauth2 import service_account
 
 
-def pair_after_and_previous(bucket_name, credentials):
-    storage_client = storage.Client(credentials=credentials)
+def pair_after_and_previous(storage_client):
     blobs = storage_client.list_blobs(bucket_name)
 
     after_dict = {}
@@ -51,7 +50,7 @@ def generate_download_signed_url_v4(bucket_name):
     storage_client = storage.Client(credentials=credentials, project=credentials_dict["project_id"])
 
     video_data = []
-    for prev_blob_name, after_blob_name in pair_after_and_previous("evaluation_set", credentials):
+    for prev_blob_name, after_blob_name in pair_after_and_previous(storage_client):
         bucket = storage_client.bucket(bucket_name)
         prev_blob = bucket.blob(prev_blob_name)
         after_blob = bucket.blob(after_blob_name)
